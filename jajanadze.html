@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JAJANADZE FLIX - გია ჯაჯანიძის ოფიციალური პორტალი</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Bebas Neue, Inter, Noto Sans Georgian -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Georgian:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="jajanadze.css">
+</head>
+<body>
+
+  <!-- ========================================================
+       1. NETFLIX-STYLE CINEMATIC INTRO OVERLAY
+       ======================================================== -->
+  <div class="intro-overlay" id="introOverlay">
+    <div class="intro-bg-rays"></div>
+
+    <!-- Skip Button -->
+    <button class="btn-skip-intro" id="btnSkipIntro">
+      გამოტოვება <i class="fa-solid fa-forward-step"></i>
+    </button>
+
+    <!-- Initial Start Screen (Unlocks Web Audio & Speech) -->
+    <div class="intro-start-screen" id="introStartScreen">
+      <span class="intro-badge">
+        <i class="fa-solid fa-crown" style="color: var(--gold);"></i> ოფიციალური პრემიერა
+      </span>
+      <h1 class="intro-start-title">JAJANADZE FLIX</h1>
+      <p class="intro-start-desc">
+        ყველა გადაცემა, შოუ, სიმღერა და ექსკლუზივი ერთ სივრცეში.<br>
+        დააჭირეთ ეპიკური ინტროს გასააქტიურებლად:
+      </p>
+      <button class="btn-enter-flix" id="btnEnterFlix">
+        <i class="fa-solid fa-play"></i> JAJANADZE FLIX - შესვლა
+      </button>
+    </div>
+
+    <!-- Cinematic 3D Animation Stage -->
+    <div class="intro-stage" id="introStage">
+      <!-- Jajanadze Photos Montage Flying In -->
+      <div class="intro-photos-montage">
+        <div class="intro-photo-card card-1">
+          <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80" alt="Jajanadze Show">
+        </div>
+        <div class="intro-photo-card card-2">
+          <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=600&q=80" alt="Jajanadze Interview">
+        </div>
+        <div class="intro-photo-card card-3">
+          <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80" alt="Jajanadze Music">
+        </div>
+        <div class="intro-photo-card card-4">
+          <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=600&q=80" alt="Jajanadze Special">
+        </div>
+      </div>
+
+      <!-- Animated Netflix-style Logo Explosions -->
+      <div class="intro-logo-container">
+        <div class="intro-logo-title">JAJANADZE</div>
+        <div class="intro-logo-sub">FLIX • სხვა რაკურსი</div>
+      </div>
+
+      <!-- Spoken Entrance Subtitle Banner -->
+      <div class="intro-subtitle-banner">
+        <i class="fa-solid fa-volume-high intro-subtitle-icon"></i>
+        <span class="intro-subtitle-text">„დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს“</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       2. REGISTRATION / LOGIN MODAL WITH GMAIL 5-DIGIT OTP
+       ======================================================== -->
+  <div class="auth-overlay hidden" id="authOverlay">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">JAJANADZE FLIX</div>
+        <h2 class="auth-title">შესვლა და რეგისტრაცია</h2>
+        <p class="auth-subtitle">შეიყვანეთ თქვენი Gmail 5-ციფრიანი კოდის მისაღებად</p>
+      </div>
+
+      <form id="authForm" onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label">თქვენი სახელი</label>
+          <div class="form-input-wrap">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="userNameInput" class="form-input" placeholder="მაგ: დათო" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Gmail მისამართი</label>
+          <div class="form-input-wrap">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="userEmailInput" class="form-input" placeholder="tqveni.saxeli@gmail.com" required>
+          </div>
+        </div>
+
+        <button type="button" class="btn-auth-primary" id="btnSendCode">
+          <i class="fa-solid fa-paper-plane"></i> კოდის მიღება Gmail-ზე
+        </button>
+
+        <!-- 5-Digit OTP Verification Section -->
+        <div class="otp-section" id="otpSection">
+          <div class="otp-status-notice">
+            <div class="otp-status-badge">
+              <i class="fa-solid fa-circle-check"></i> კოდი გაიგზავნა Gmail-ზე!
+            </div>
+            <p class="otp-status-desc">
+              5-ციფრიანი უსაფრთხოების კოდი გაიგზავნა თქვენს ელ-ფოსტაზე:<br>
+              <span class="otp-sent-email-highlight" id="sentEmailDisplay"></span><br>
+              გახსენით თქვენი Gmail (Inbox ან Spam საქაღალდე), ნახეთ კოდი და შეიყვანეთ ქვემოთ:
+            </p>
+            <a href="https://mail.google.com" target="_blank" class="btn-open-gmail-link">
+              <i class="fa-brands fa-google"></i> Gmail-ის გახსნა (mail.google.com)
+            </a>
+          </div>
+
+          <div class="otp-inputs-grid">
+            <input type="text" maxlength="1" class="otp-digit" pattern="[0-9]" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit" pattern="[0-9]" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit" pattern="[0-9]" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit" pattern="[0-9]" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit" pattern="[0-9]" inputmode="numeric">
+          </div>
+          <button type="button" class="btn-auth-primary" id="btnVerifyOtp">
+            <i class="fa-solid fa-lock-open"></i> ვერიფიკაცია და შესვლა
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       3. SITE HEADER & NAVIGATION
+       ======================================================== -->
+  <header class="site-header">
+    <div class="header-left">
+      <a href="#" class="brand-logo">
+        <span class="brand-logo-text">JAJANADZE FLIX</span>
+      </a>
+      <ul class="nav-links">
+        <li><a class="nav-link active" data-category="all">მთავარი</a></li>
+        <li><a class="nav-link" data-category="talkshow">სხვა რაკურსი</a></li>
+        <li><a class="nav-link" data-category="music">სიმღერები</a></li>
+        <li><a class="nav-link" data-category="mystic">მისტიკა</a></li>
+        <li><a class="nav-link" data-category="comedy">კურიოზები</a></li>
+      </ul>
+    </div>
+
+    <div class="header-right">
+      <!-- 2-Minute Announcement Countdown Pill -->
+      <div class="timer-pill" id="timerPill" title="ყოველ 2 წუთში ამბობს: 'დათოა სულელი ტვინიკოსი'. დააჭირეთ ახლავე გასაჟღერებლად!">
+        <span class="timer-dot"></span>
+        <i class="fa-solid fa-bullhorn"></i>
+        <span id="timerText">დათო: 02:00</span>
+      </div>
+
+      <!-- Search Input -->
+      <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="ძიება ვიდეოებში...">
+      </div>
+
+      <!-- User Profile Badge -->
+      <div class="user-profile-badge" id="userProfileBadge" title="დააჭირეთ გამოსასვლელად">
+        <div class="user-avatar">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <span class="user-name" id="currentUserName">სტუმარი</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       4. HERO BANNER
+       ======================================================== -->
+  <section class="hero-banner">
+    <div class="hero-vignette"></div>
+    <div class="hero-content">
+      <div class="hero-badge-row">
+        <span class="hero-tag">🔥 N1 ტრენდი</span>
+        <span class="hero-quote-pill">„დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს“</span>
+      </div>
+      <h1 class="hero-title">სხვა რაკურსი: გია ჯაჯანიძის საავტორო შოუ</h1>
+      <p class="hero-desc">
+        ყველაზე რეიტინგული, სკანდალური და ემოციური თოქ-შოუ ქართულ ტელესივრცეში. 
+        ექსკლუზიური სტუმრები, უნიკალური განხილვები, მისტიკა და გია ჯაჯანიძის ლეგენდარული სიმღერები.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-hero-play" id="heroPlayBtn">
+          <i class="fa-solid fa-play"></i> ყურება
+        </button>
+        <button class="btn-hero-info" id="heroInfoBtn">
+          <i class="fa-solid fa-circle-info"></i> დეტალები
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       5. CONTENT AREA: CATEGORIES, CAROUSELS & INFINITE GRID
+       ======================================================== -->
+  <main class="content-area">
+    <!-- Category Filter Bar -->
+    <div class="category-filter-bar">
+      <button class="filter-chip active" data-category="all">
+        <i class="fa-solid fa-border-all"></i> ყველა ვიდეო
+      </button>
+      <button class="filter-chip" data-category="talkshow">
+        <i class="fa-solid fa-tv"></i> სხვა რაკურსი
+      </button>
+      <button class="filter-chip" data-category="music">
+        <i class="fa-solid fa-music"></i> სიმღერები
+      </button>
+      <button class="filter-chip" data-category="mystic">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> მისტიკა
+      </button>
+      <button class="filter-chip" data-category="interview">
+        <i class="fa-solid fa-microphone"></i> ინტერვიუები
+      </button>
+      <button class="filter-chip" data-category="comedy">
+        <i class="fa-solid fa-face-laugh-squint"></i> კურიოზები
+      </button>
+      <button class="filter-chip" data-category="special">
+        <i class="fa-solid fa-crown"></i> სპეციალური
+      </button>
+    </div>
+
+    <!-- Section Heading -->
+    <div class="section-heading-row">
+      <h3 class="section-title">
+        <i class="fa-solid fa-fire" style="color: var(--netflix-red);"></i> ჯაჯანაძის ვიდეოების კოლექცია
+      </h3>
+    </div>
+
+    <!-- Video Grid -->
+    <div class="video-grid" id="videoGrid">
+      <!-- Injected by JavaScript -->
+    </div>
+
+    <!-- Infinite Scroll / Load More -->
+    <div class="infinite-loading-wrap">
+      <button class="btn-load-more" id="btnLoadMore">
+        <i class="fa-solid fa-angles-down"></i> მეტი ვიდეოს ჩატვირთვა
+      </button>
+    </div>
+  </main>
+
+  <!-- ========================================================
+       6. BUILT-IN VIDEO PLAYER MODAL & COMMENTS
+       ======================================================== -->
+  <div class="player-modal hidden" id="playerModal">
+    <div class="player-modal-content">
+      <button class="btn-close-player" id="btnClosePlayer" title="დახურვა">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- 16:9 YouTube Embed -->
+      <div class="video-frame-container">
+        <iframe id="playerIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <!-- Player Details -->
+      <div class="player-details-body">
+        <h2 class="player-title" id="playerTitle">ვიდეოს სათაური</h2>
+
+        <div class="player-meta-bar">
+          <div class="player-meta-left">
+            <span class="player-match-rate"><i class="fa-solid fa-check-circle"></i> 99% Match</span>
+            <span id="playerYear">2024</span>
+            <span id="playerCategory" style="color: var(--gold); font-weight: 700;">სხვა რაკურსი</span>
+            <span id="playerViews" style="color: #888;">0 ნახვა</span>
+          </div>
+
+          <div class="player-actions-row">
+            <button class="btn-player-action" id="btnLikeVideo">
+              <i class="fa-regular fa-heart"></i> მოწონება
+            </button>
+            <button class="btn-player-action" id="btnOpenYoutube" title="ნახვა YouTube-ზე">
+              <i class="fa-brands fa-youtube" style="color: #ff334b;"></i> YouTube
+            </button>
+          </div>
+        </div>
+
+        <p class="player-description" id="playerDesc">ვიდეოს დეტალური აღწერა...</p>
+
+        <!-- Interactive Georgian Comments Section -->
+        <div class="comments-section">
+          <h4 class="comments-header">
+            <i class="fa-regular fa-comments" style="color: var(--netflix-red);"></i> კომენტარები და განხილვა
+          </h4>
+
+          <div class="comment-input-box">
+            <input type="text" id="commentInput" class="comment-input" placeholder="დაწერეთ თქვენი კომენტარი გადაცემაზე...">
+            <button class="btn-send-comment" id="btnSendComment">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+
+          <div class="comments-list" id="commentsList">
+            <!-- Dynamic Comments -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       7. 2-MINUTE SPOKEN ANNOUNCEMENT TOAST BANNER
+       ======================================================== -->
+  <div class="announcement-toast" id="announcementToast">
+    <div class="announcement-avatar">
+      <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=150&q=80" alt="Jajanidze">
+    </div>
+    <div>
+      <div class="announcement-title">
+        <i class="fa-solid fa-bullhorn"></i> ჯაჯანაძის 2-წუთიანი შეხსენება
+      </div>
+      <div class="announcement-text">„დათოა სულელი ტვინიკოსი“ 🧠</div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       8. FLOATING AUDIO / MUSIC PLAYER BAR
+       ======================================================== -->
+  <div class="bottom-music-bar" id="bottomMusicBar">
+    <div class="music-bar-left">
+      <div class="music-equalizer">
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+      </div>
+      <div class="music-track-info">
+        <span class="music-track-title">ჯაჯანაძის შოუს ოფიციალური თემა (Groove Mix)</span>
+        <span class="music-track-sub">სხვა რაკურსი • Synth & Funk Edition</span>
+      </div>
+    </div>
+
+    <div class="music-controls">
+      <button class="btn-music-play" id="btnMusicPlay" title="დაკვრა / პაუზა">
+        <i class="fa-solid fa-play"></i>
+      </button>
+
+      <button class="btn-music-tool" id="btnMusicMute" title="ხმის ჩართვა / გამორთვა">
+        <i class="fa-solid fa-volume-high"></i>
+      </button>
+
+      <div class="volume-slider-wrap">
+        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.35">
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="jajanadze_data.js"></script>
+  <script src="jajanadze_audio.js"></script>
+  <script src="jajanadze_app.js"></script>
+</body>
+</html>

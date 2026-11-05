@@ -1,0 +1,3242 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JAJANADZE FLIX - გია ჯაჯანიძის ოფიციალური პორტალი</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Bebas Neue, Inter, Noto Sans Georgian -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Georgian:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <style>
+/* JAJANADZE FLIX - Premium Netflix Dark Theme CSS */
+
+:root {
+  --netflix-red: #E50914;
+  --netflix-red-hover: #f40612;
+  --netflix-dark: #141414;
+  --netflix-black: #0b0b0b;
+  --netflix-card-bg: #1f1f1f;
+  --netflix-light-gray: #e5e5e5;
+  --netflix-gray: #808080;
+  --gold: #FFD700;
+  --gold-glow: rgba(255, 215, 0, 0.4);
+  --red-glow: rgba(229, 9, 20, 0.5);
+  --glass-bg: rgba(20, 20, 20, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --font-main: 'Noto Sans Georgian', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --transition-fast: 0.25s ease;
+  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--netflix-black);
+  color: #ffffff;
+  font-family: var(--font-main);
+  overflow-x: hidden;
+  min-height: 100vh;
+  line-height: 1.5;
+  user-select: none;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--netflix-red);
+}
+
+/* ========================================================
+   1. NETFLIX-STYLE CINEMATIC INTRO ANIMATION
+   ======================================================== */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000000;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), visibility 1s;
+}
+
+.intro-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Background red cinematic glow lines */
+.intro-bg-rays {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(229, 9, 20, 0.35) 0%, rgba(184, 29, 36, 0.15) 35%, transparent 70%);
+  animation: introPulse 3.5s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes introPulse {
+  0% { transform: scale(0.9); opacity: 0.4; }
+  100% { transform: scale(1.2); opacity: 0.9; }
+}
+
+/* Initial Start Prompt (to unlock browser audio policy) */
+.intro-start-screen {
+  position: absolute;
+  z-index: 20;
+  text-align: center;
+  max-width: 600px;
+  padding: 30px;
+}
+
+.intro-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(229, 9, 20, 0.2);
+  border: 1px solid var(--netflix-red);
+  color: #ff858d;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 50px;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.intro-start-title {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #ffffff 40%, var(--netflix-red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.intro-start-desc {
+  font-size: 1.1rem;
+  color: #b3b3b3;
+  margin-bottom: 28px;
+}
+
+.btn-enter-flix {
+  background: var(--netflix-red);
+  color: #ffffff;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: 800;
+  padding: 16px 42px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 0 40px var(--red-glow);
+  transition: var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-enter-flix:hover {
+  background: var(--netflix-red-hover);
+  transform: scale(1.06);
+  box-shadow: 0 0 60px rgba(229, 9, 20, 0.8);
+}
+
+/* Cinematic Animation Stage */
+.intro-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: none; /* revealed on play */
+}
+
+/* Jajanadze Photo Carousel / Montage flying during intro */
+.intro-photos-montage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.intro-photo-card {
+  position: absolute;
+  width: 260px;
+  height: 360px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid rgba(229, 9, 20, 0.6);
+  box-shadow: 0 0 50px rgba(229, 9, 20, 0.5);
+  opacity: 0;
+  transform: scale(0.4) rotate(0deg);
+}
+
+.intro-photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-1 {
+  animation: photoFly1 4.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.card-2 {
+  animation: photoFly2 4.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards;
+}
+.card-3 {
+  animation: photoFly3 4.5s cubic-bezier(0.2, 0.8, 0.2, 1) 1.0s forwards;
+}
+.card-4 {
+  animation: photoFly4 4.5s cubic-bezier(0.2, 0.8, 0.2, 1) 1.4s forwards;
+}
+
+@keyframes photoFly1 {
+  0% { opacity: 0; transform: translate(-300px, -100px) scale(0.3) rotate(-15deg); }
+  30% { opacity: 0.85; transform: translate(-200px, -50px) scale(0.9) rotate(-8deg); }
+  75% { opacity: 0.9; transform: translate(-120px, 0) scale(1.05) rotate(-2deg); }
+  100% { opacity: 0; transform: translate(-50px, 50px) scale(1.4) rotate(5deg); }
+}
+
+@keyframes photoFly2 {
+  0% { opacity: 0; transform: translate(300px, 120px) scale(0.3) rotate(15deg); }
+  30% { opacity: 0.85; transform: translate(220px, 60px) scale(0.9) rotate(8deg); }
+  75% { opacity: 0.9; transform: translate(140px, 10px) scale(1.05) rotate(2deg); }
+  100% { opacity: 0; transform: translate(60px, -30px) scale(1.4) rotate(-5deg); }
+}
+
+@keyframes photoFly3 {
+  0% { opacity: 0; transform: translate(0, -250px) scale(0.3) rotate(0deg); }
+  40% { opacity: 0.95; transform: translate(0, -40px) scale(1.1) rotate(0deg); filter: brightness(1.2); }
+  85% { opacity: 0.9; transform: translate(0, 0) scale(1.2) rotate(0deg); }
+  100% { opacity: 0; transform: translate(0, 50px) scale(1.5) rotate(0deg); }
+}
+
+@keyframes photoFly4 {
+  0% { opacity: 0; transform: scale(0.2); }
+  50% { opacity: 0.8; transform: scale(1.0); }
+  100% { opacity: 0; transform: scale(1.6); }
+}
+
+/* Netflix "N" / "J" ribbon letter morph */
+.intro-logo-container {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  animation: logoExplode 4.2s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+@keyframes logoExplode {
+  0% { transform: scale(0.4); opacity: 0; letter-spacing: -10px; }
+  35% { transform: scale(1.05); opacity: 1; letter-spacing: 8px; text-shadow: 0 0 50px var(--netflix-red); }
+  70% { transform: scale(1.0); opacity: 1; letter-spacing: 12px; text-shadow: 0 0 80px var(--netflix-red), 0 0 120px #ff2a2a; }
+  100% { transform: scale(1.6); opacity: 0; filter: blur(10px); }
+}
+
+.intro-logo-title {
+  font-size: 5rem;
+  font-weight: 900;
+  color: var(--netflix-red);
+  text-transform: uppercase;
+  text-shadow: 0 0 30px rgba(229, 9, 20, 0.8);
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  line-height: 1;
+}
+
+.intro-logo-sub {
+  font-size: 1.4rem;
+  color: var(--gold);
+  letter-spacing: 4px;
+  font-weight: 800;
+  margin-top: 10px;
+  text-shadow: 0 0 20px var(--gold-glow);
+}
+
+/* Spoken Subtitle during entrance */
+.intro-subtitle-banner {
+  position: absolute;
+  bottom: 80px;
+  z-index: 25;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+  padding: 16px 36px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: bannerFadeIn 4.2s ease forwards;
+}
+
+@keyframes bannerFadeIn {
+  0% { opacity: 0; transform: translateY(30px); }
+  25% { opacity: 1; transform: translateY(0); }
+  85% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px); }
+}
+
+.intro-subtitle-icon {
+  color: var(--gold);
+  font-size: 1.4rem;
+  animation: pulseIcon 1.5s infinite;
+}
+
+@keyframes pulseIcon {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+
+.intro-subtitle-text {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.btn-skip-intro {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-skip-intro:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ========================================================
+   2. AUTH / REGISTRATION & GMAIL 5-DIGIT OTP MODAL
+   ======================================================== */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(15px);
+  z-index: 88888;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+.auth-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.auth-card {
+  background: rgba(20, 20, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 480px;
+  padding: 40px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(229, 9, 20, 0.2);
+  position: relative;
+  animation: cardPopIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cardPopIn {
+  from { opacity: 0; transform: scale(0.92) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.auth-logo {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--netflix-red);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+}
+
+.auth-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.auth-subtitle {
+  font-size: 0.9rem;
+  color: #999999;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #cccccc;
+  margin-bottom: 8px;
+}
+
+.form-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-input-wrap i {
+  position: absolute;
+  left: 14px;
+  color: #777777;
+}
+
+.form-input {
+  width: 100%;
+  background: #333333;
+  border: 1px solid #444444;
+  color: #ffffff;
+  font-size: 1rem;
+  padding: 12px 14px 12px 42px;
+  border-radius: 6px;
+  transition: var(--transition-fast);
+  outline: none;
+}
+
+.form-input:focus {
+  background: #404040;
+  border-color: var(--netflix-red);
+  box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
+}
+
+.btn-auth-primary {
+  width: 100%;
+  background: var(--netflix-red);
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4);
+}
+
+.btn-auth-primary:hover {
+  background: var(--netflix-red-hover);
+  transform: translateY(-1px);
+}
+
+/* 5-Digit OTP Verification Box */
+.otp-section {
+  display: none;
+  margin-top: 15px;
+  animation: fadeIn 0.4s ease;
+}
+
+.otp-title {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #bbbbbb;
+  margin-bottom: 14px;
+}
+
+.otp-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.otp-digit {
+  width: 100%;
+  height: 60px;
+  background: #2a2a2a;
+  border: 2px solid #444444;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.otp-digit:focus {
+  border-color: var(--netflix-red);
+  box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+  background: #333333;
+}
+
+/* Real Gmail Dispatch Status Notice */
+.otp-status-notice {
+  background: rgba(28, 28, 28, 0.95);
+  border: 1px solid rgba(76, 175, 80, 0.4);
+  border-left: 4px solid #4caf50;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+}
+
+.otp-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #4caf50;
+  font-weight: 800;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.otp-status-desc {
+  font-size: 0.85rem;
+  color: #d5d5d5;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.otp-sent-email-highlight {
+  color: #ff858d;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.btn-open-gmail-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ea4335;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 8px 20px;
+  border-radius: 6px;
+  transition: var(--transition-fast);
+}
+
+.btn-open-gmail-link:hover {
+  background: #d93025;
+  transform: translateY(-1px);
+}
+
+.gmail-toast-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.gmail-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ea4335;
+}
+
+.gmail-time {
+  font-size: 0.75rem;
+  color: #9aa0a6;
+}
+
+.gmail-subject {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #e8eaed;
+  margin-bottom: 4px;
+}
+
+.gmail-body {
+  font-size: 0.85rem;
+  color: #bdc1c6;
+  margin-bottom: 12px;
+}
+
+.gmail-code-highlight {
+  display: inline-block;
+  background: rgba(234, 67, 53, 0.2);
+  color: #ff7668;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 3px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px dashed #ea4335;
+}
+
+.gmail-action-btn {
+  background: #ea4335;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-fast);
+}
+
+.gmail-action-btn:hover {
+  background: #d93025;
+}
+
+/* ========================================================
+   3. PLATFORM HEADER & TOP BAR
+   ======================================================== */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(20,20,20,0.7) 70%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4%;
+  z-index: 1000;
+  transition: background 0.3s;
+}
+
+.site-header.scrolled {
+  background: rgba(15, 15, 15, 0.98);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brand-logo-text {
+  font-size: 1.9rem;
+  font-weight: 900;
+  color: var(--netflix-red);
+  letter-spacing: 2px;
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  text-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.nav-link {
+  color: #e5e5e5;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+  cursor: pointer;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* 2-Minute Reminder Pill */
+.timer-pill {
+  background: rgba(229, 9, 20, 0.15);
+  border: 1px solid rgba(229, 9, 20, 0.4);
+  padding: 6px 14px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ff999f;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.timer-pill:hover {
+  background: rgba(229, 9, 20, 0.3);
+  transform: scale(1.03);
+}
+
+.timer-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--netflix-red);
+  animation: pulseDot 1s infinite alternate;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(1.3); opacity: 1; }
+}
+
+/* Search Box */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 8px 14px 8px 36px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  width: 180px;
+  transition: width 0.3s ease, border-color 0.3s ease;
+  outline: none;
+}
+
+.search-input:focus {
+  width: 260px;
+  border-color: var(--netflix-red);
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: #aaaaaa;
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+/* User Profile Badge */
+.user-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: var(--transition-fast);
+}
+
+.user-profile-badge:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: var(--netflix-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.user-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ========================================================
+   4. HERO BANNER
+   ======================================================== */
+.hero-banner {
+  position: relative;
+  height: 82vh;
+  min-height: 550px;
+  display: flex;
+  align-items: center;
+  padding: 0 4%;
+  margin-bottom: 20px;
+  background: url('https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+}
+
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(77deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 45%, rgba(0,0,0,0.2) 75%, transparent 100%),
+              linear-gradient(180deg, transparent 70%, var(--netflix-black) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 650px;
+}
+
+.hero-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.hero-tag {
+  background: var(--netflix-red);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.hero-quote-pill {
+  color: var(--gold);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.hero-title {
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.8);
+}
+
+.hero-desc {
+  font-size: 1.1rem;
+  color: #d1d1d1;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-hero-play {
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition-fast);
+}
+
+.btn-hero-play:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.04);
+}
+
+.btn-hero-info {
+  background: rgba(109, 109, 110, 0.7);
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition-fast);
+}
+
+.btn-hero-info:hover {
+  background: rgba(109, 109, 110, 0.4);
+  transform: scale(1.04);
+}
+
+/* ========================================================
+   5. VIDEO CAROUSEL ROWS & INFINITE GRID
+   ======================================================== */
+.content-area {
+  padding: 0 4% 100px 4%;
+  position: relative;
+  z-index: 20;
+}
+
+.category-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.filter-chip {
+  background: #222222;
+  color: #cccccc;
+  border: 1px solid #333333;
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition-fast);
+}
+
+.filter-chip:hover, .filter-chip.active {
+  background: var(--netflix-red);
+  color: #ffffff;
+  border-color: var(--netflix-red);
+  box-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
+}
+
+.section-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* Video Card */
+.video-card {
+  background: var(--netflix-card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.video-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(229, 9, 20, 0.3);
+  border-color: rgba(229, 9, 20, 0.4);
+  z-index: 10;
+}
+
+.card-thumb-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+.card-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.video-card:hover .card-thumb {
+  transform: scale(1.08);
+}
+
+.card-overlay-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border-left: 3px solid var(--netflix-red);
+}
+
+.card-duration {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.85);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.card-play-hover {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.video-card:hover .card-play-hover {
+  opacity: 1;
+}
+
+.play-circle-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--netflix-red);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 0 20px var(--red-glow);
+  transform: scale(0.85);
+  transition: transform var(--transition-fast);
+}
+
+.video-card:hover .play-circle-btn {
+  transform: scale(1);
+}
+
+.card-info {
+  padding: 14px;
+}
+
+.card-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 0.75rem;
+}
+
+.card-rating {
+  color: #46d369; /* Netflix Match Green */
+  font-weight: 800;
+}
+
+.card-year {
+  color: #808080;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #ffffff;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #888888;
+}
+
+/* Infinite Scroll Loading Sentinel */
+.infinite-loading-wrap {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--netflix-red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-load-more {
+  background: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #444444;
+  padding: 12px 32px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-load-more:hover {
+  background: #3a3a3a;
+  border-color: var(--netflix-red);
+}
+
+/* ========================================================
+   6. BUILT-IN VIDEO PLAYER MODAL & COMMENTS
+   ======================================================== */
+.player-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.94);
+  backdrop-filter: blur(12px);
+  z-index: 90000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  overflow-y: auto;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.player-modal.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.player-modal-content {
+  background: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 960px;
+  overflow: hidden;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 50px rgba(229, 9, 20, 0.2);
+  position: relative;
+  animation: playerSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes playerSlideUp {
+  from { opacity: 0; transform: translateY(30px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.btn-close-player {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: var(--transition-fast);
+}
+
+.btn-close-player:hover {
+  background: var(--netflix-red);
+  transform: rotate(90deg);
+}
+
+.video-frame-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000000;
+}
+
+.video-frame-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.player-details-body {
+  padding: 28px;
+}
+
+.player-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.player-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.9rem;
+}
+
+.player-match-rate {
+  color: #46d369;
+  font-weight: 800;
+}
+
+.player-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-player-action {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-fast);
+}
+
+.btn-player-action:hover, .btn-player-action.active {
+  background: var(--netflix-red);
+  border-color: var(--netflix-red);
+}
+
+.player-description {
+  font-size: 1rem;
+  color: #cccccc;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+/* Comments Section */
+.comments-header {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.comment-input-box {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.comment-input {
+  flex: 1;
+  background: #252525;
+  border: 1px solid #383838;
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.comment-input:focus {
+  border-color: var(--netflix-red);
+}
+
+.btn-send-comment {
+  background: var(--netflix-red);
+  color: #ffffff;
+  border: none;
+  padding: 0 22px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-send-comment:hover {
+  background: var(--netflix-red-hover);
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.comment-item {
+  background: #202020;
+  padding: 14px 18px;
+  border-radius: 8px;
+  border-left: 3px solid var(--netflix-red);
+}
+
+.comment-author-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.comment-author {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.comment-time {
+  font-size: 0.75rem;
+  color: #888888;
+}
+
+.comment-text {
+  font-size: 0.9rem;
+  color: #d6d6d6;
+}
+
+/* ========================================================
+   7. 2-MINUTE SPOKEN REMINDER POPUP TOAST
+   ======================================================== */
+.announcement-toast {
+  position: fixed;
+  bottom: 85px;
+  right: 25px;
+  z-index: 99990;
+  background: rgba(20, 20, 20, 0.95);
+  border: 2px solid var(--netflix-red);
+  box-shadow: 0 10px 40px rgba(229, 9, 20, 0.5);
+  border-radius: 12px;
+  padding: 18px 24px;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transform: translateY(120px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+}
+
+.announcement-toast.visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.announcement-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.announcement-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.announcement-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.announcement-text {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+/* ========================================================
+   8. BOTTOM FLOATING MUSIC & AUDIO PLAYER BAR
+   ======================================================== */
+.bottom-music-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(14, 14, 14, 0.96);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4%;
+  z-index: 1000;
+}
+
+.music-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.music-equalizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 20px;
+}
+
+.eq-bar {
+  width: 4px;
+  background: var(--netflix-red);
+  border-radius: 2px;
+  height: 5px;
+  transition: height 0.15s ease;
+}
+
+.bottom-music-bar.playing .eq-bar:nth-child(1) { animation: eqBounce 0.6s infinite ease alternate; }
+.bottom-music-bar.playing .eq-bar:nth-child(2) { animation: eqBounce 0.4s infinite 0.15s ease alternate; }
+.bottom-music-bar.playing .eq-bar:nth-child(3) { animation: eqBounce 0.7s infinite 0.3s ease alternate; }
+.bottom-music-bar.playing .eq-bar:nth-child(4) { animation: eqBounce 0.5s infinite 0.1s ease alternate; }
+
+@keyframes eqBounce {
+  0% { height: 4px; }
+  100% { height: 20px; }
+}
+
+.music-track-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.music-track-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.music-track-sub {
+  font-size: 0.75rem;
+  color: #888888;
+}
+
+.music-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-music-play {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--netflix-red);
+  color: #ffffff;
+  border: none;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
+  transition: var(--transition-fast);
+}
+
+.btn-music-play:hover {
+  transform: scale(1.08);
+}
+
+.btn-music-tool {
+  background: transparent;
+  border: none;
+  color: #bbbbbb;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 6px;
+  transition: var(--transition-fast);
+}
+
+.btn-music-tool:hover {
+  color: #ffffff;
+}
+
+.volume-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.volume-slider {
+  accent-color: var(--netflix-red);
+  width: 90px;
+  cursor: pointer;
+}
+
+/* Responsive queries */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero-title { font-size: 2rem; }
+  .intro-logo-title { font-size: 3rem; }
+  .search-input { width: 130px; }
+  .search-input:focus { width: 170px; }
+  .video-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  .auth-card { padding: 25px; }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- ========================================================
+       1. NETFLIX-STYLE CINEMATIC INTRO OVERLAY
+       ======================================================== -->
+  <div class="intro-overlay" id="introOverlay">
+    <div class="intro-bg-rays"></div>
+
+    <!-- Skip Button -->
+    <button class="btn-skip-intro" id="btnSkipIntro">
+      გამოტოვება <i class="fa-solid fa-forward-step"></i>
+    </button>
+
+    <!-- Initial Start Screen (Unlocks Web Audio & Speech) -->
+    <div class="intro-start-screen" id="introStartScreen">
+      <span class="intro-badge">
+        <i class="fa-solid fa-crown" style="color: var(--gold);"></i> ოფიციალური პრემიერა
+      </span>
+      <h1 class="intro-start-title">JAJANADZE FLIX</h1>
+      <p class="intro-start-desc">
+        ყველა გადაცემა, შოუ, სიმღერა და ექსკლუზივი ერთ სივრცეში.<br>
+        დააჭირეთ ეპიკური ინტროს გასააქტიურებლად:
+      </p>
+      <button class="btn-enter-flix" id="btnEnterFlix">
+        <i class="fa-solid fa-play"></i> JAJANADZE FLIX - შესვლა
+      </button>
+    </div>
+
+    <!-- Cinematic 3D Animation Stage -->
+    <div class="intro-stage" id="introStage">
+      <!-- Jajanadze Photos Montage Flying In -->
+      <div class="intro-photos-montage">
+        <div class="intro-photo-card card-1">
+          <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80" alt="Jajanadze Show">
+        </div>
+        <div class="intro-photo-card card-2">
+          <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=600&q=80" alt="Jajanadze Interview">
+        </div>
+        <div class="intro-photo-card card-3">
+          <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80" alt="Jajanadze Music">
+        </div>
+        <div class="intro-photo-card card-4">
+          <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=600&q=80" alt="Jajanadze Special">
+        </div>
+      </div>
+
+      <!-- Animated Netflix-style Logo Explosions -->
+      <div class="intro-logo-container">
+        <div class="intro-logo-title">JAJANADZE</div>
+        <div class="intro-logo-sub">FLIX • სხვა რაკურსი</div>
+      </div>
+
+      <!-- Spoken Entrance Subtitle Banner -->
+      <div class="intro-subtitle-banner">
+        <i class="fa-solid fa-volume-high intro-subtitle-icon"></i>
+        <span class="intro-subtitle-text">„დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს“</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       2. REGISTRATION / LOGIN MODAL WITH GMAIL 5-DIGIT OTP
+       ======================================================== -->
+  <div class="auth-overlay hidden" id="authOverlay">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">JAJANADZE FLIX</div>
+        <h2 class="auth-title">შესვლა და რეგისტრაცია</h2>
+        <p class="auth-subtitle">შეიყვანეთ თქვენი Gmail 5-ციფრიანი კოდის მისაღებად</p>
+      </div>
+
+      <form id="authForm" onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label">თქვენი სახელი</label>
+          <div class="form-input-wrap">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="userNameInput" class="form-input" placeholder="მაგ: დათო" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Gmail მისამართი</label>
+          <div class="form-input-wrap">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="userEmailInput" class="form-input" placeholder="tqveni.saxeli@gmail.com" required>
+          </div>
+        </div>
+
+        <button type="button" class="btn-auth-primary" id="btnSendCode">
+          <i class="fa-solid fa-paper-plane"></i> კოდის მიღება Gmail-ზე
+        </button>
+
+        <!-- 5-Digit OTP Verification Section -->
+        <div class="otp-section" id="otpSection">
+          <div class="otp-status-notice">
+            <div class="otp-status-badge">
+              <i class="fa-solid fa-circle-check"></i> კოდი გაიგზავნა Gmail-ზე!
+            </div>
+            <p class="otp-status-desc">
+              5-ციფრიანი უსაფრთხოების კოდი გაიგზავნა თქვენს ელ-ფოსტაზე:<br>
+              <span class="otp-sent-email-highlight" id="sentEmailDisplay"></span><br>
+              გახსენით თქვენი Gmail (Inbox ან Spam საქაღალდე), ნახეთ კოდი და შეიყვანეთ ქვემოთ:
+            </p>
+            <a href="https://mail.google.com" target="_blank" class="btn-open-gmail-link">
+              <i class="fa-brands fa-google"></i> Gmail-ის გახსნა (mail.google.com)
+            </a>
+          </div>
+
+          <div class="otp-inputs-grid">
+            <input type="text" maxlength="1" class="otp-digit" pattern="[0-9]" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit" pattern="[0-9]" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit" pattern="[0-9]" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit" pattern="[0-9]" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit" pattern="[0-9]" inputmode="numeric">
+          </div>
+          <button type="button" class="btn-auth-primary" id="btnVerifyOtp">
+            <i class="fa-solid fa-lock-open"></i> ვერიფიკაცია და შესვლა
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       3. SITE HEADER & NAVIGATION
+       ======================================================== -->
+  <header class="site-header">
+    <div class="header-left">
+      <a href="#" class="brand-logo">
+        <span class="brand-logo-text">JAJANADZE FLIX</span>
+      </a>
+      <ul class="nav-links">
+        <li><a class="nav-link active" data-category="all">მთავარი</a></li>
+        <li><a class="nav-link" data-category="talkshow">სხვა რაკურსი</a></li>
+        <li><a class="nav-link" data-category="music">სიმღერები</a></li>
+        <li><a class="nav-link" data-category="mystic">მისტიკა</a></li>
+        <li><a class="nav-link" data-category="comedy">კურიოზები</a></li>
+      </ul>
+    </div>
+
+    <div class="header-right">
+      <!-- 2-Minute Announcement Countdown Pill -->
+      <div class="timer-pill" id="timerPill" title="ყოველ 2 წუთში ამბობს: 'დათოა სულელი ტვინიკოსი'. დააჭირეთ ახლავე გასაჟღერებლად!">
+        <span class="timer-dot"></span>
+        <i class="fa-solid fa-bullhorn"></i>
+        <span id="timerText">დათო: 02:00</span>
+      </div>
+
+      <!-- Search Input -->
+      <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="ძიება ვიდეოებში...">
+      </div>
+
+      <!-- User Profile Badge -->
+      <div class="user-profile-badge" id="userProfileBadge" title="დააჭირეთ გამოსასვლელად">
+        <div class="user-avatar">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <span class="user-name" id="currentUserName">სტუმარი</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       4. HERO BANNER
+       ======================================================== -->
+  <section class="hero-banner">
+    <div class="hero-vignette"></div>
+    <div class="hero-content">
+      <div class="hero-badge-row">
+        <span class="hero-tag">🔥 N1 ტრენდი</span>
+        <span class="hero-quote-pill">„დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს“</span>
+      </div>
+      <h1 class="hero-title">სხვა რაკურსი: გია ჯაჯანიძის საავტორო შოუ</h1>
+      <p class="hero-desc">
+        ყველაზე რეიტინგული, სკანდალური და ემოციური თოქ-შოუ ქართულ ტელესივრცეში. 
+        ექსკლუზიური სტუმრები, უნიკალური განხილვები, მისტიკა და გია ჯაჯანიძის ლეგენდარული სიმღერები.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-hero-play" id="heroPlayBtn">
+          <i class="fa-solid fa-play"></i> ყურება
+        </button>
+        <button class="btn-hero-info" id="heroInfoBtn">
+          <i class="fa-solid fa-circle-info"></i> დეტალები
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       5. CONTENT AREA: CATEGORIES, CAROUSELS & INFINITE GRID
+       ======================================================== -->
+  <main class="content-area">
+    <!-- Category Filter Bar -->
+    <div class="category-filter-bar">
+      <button class="filter-chip active" data-category="all">
+        <i class="fa-solid fa-border-all"></i> ყველა ვიდეო
+      </button>
+      <button class="filter-chip" data-category="talkshow">
+        <i class="fa-solid fa-tv"></i> სხვა რაკურსი
+      </button>
+      <button class="filter-chip" data-category="music">
+        <i class="fa-solid fa-music"></i> სიმღერები
+      </button>
+      <button class="filter-chip" data-category="mystic">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> მისტიკა
+      </button>
+      <button class="filter-chip" data-category="interview">
+        <i class="fa-solid fa-microphone"></i> ინტერვიუები
+      </button>
+      <button class="filter-chip" data-category="comedy">
+        <i class="fa-solid fa-face-laugh-squint"></i> კურიოზები
+      </button>
+      <button class="filter-chip" data-category="special">
+        <i class="fa-solid fa-crown"></i> სპეციალური
+      </button>
+    </div>
+
+    <!-- Section Heading -->
+    <div class="section-heading-row">
+      <h3 class="section-title">
+        <i class="fa-solid fa-fire" style="color: var(--netflix-red);"></i> ჯაჯანაძის ვიდეოების კოლექცია
+      </h3>
+    </div>
+
+    <!-- Video Grid -->
+    <div class="video-grid" id="videoGrid">
+      <!-- Injected by JavaScript -->
+    </div>
+
+    <!-- Infinite Scroll / Load More -->
+    <div class="infinite-loading-wrap">
+      <button class="btn-load-more" id="btnLoadMore">
+        <i class="fa-solid fa-angles-down"></i> მეტი ვიდეოს ჩატვირთვა
+      </button>
+    </div>
+  </main>
+
+  <!-- ========================================================
+       6. BUILT-IN VIDEO PLAYER MODAL & COMMENTS
+       ======================================================== -->
+  <div class="player-modal hidden" id="playerModal">
+    <div class="player-modal-content">
+      <button class="btn-close-player" id="btnClosePlayer" title="დახურვა">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- 16:9 YouTube Embed -->
+      <div class="video-frame-container">
+        <iframe id="playerIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <!-- Player Details -->
+      <div class="player-details-body">
+        <h2 class="player-title" id="playerTitle">ვიდეოს სათაური</h2>
+
+        <div class="player-meta-bar">
+          <div class="player-meta-left">
+            <span class="player-match-rate"><i class="fa-solid fa-check-circle"></i> 99% Match</span>
+            <span id="playerYear">2024</span>
+            <span id="playerCategory" style="color: var(--gold); font-weight: 700;">სხვა რაკურსი</span>
+            <span id="playerViews" style="color: #888;">0 ნახვა</span>
+          </div>
+
+          <div class="player-actions-row">
+            <button class="btn-player-action" id="btnLikeVideo">
+              <i class="fa-regular fa-heart"></i> მოწონება
+            </button>
+            <button class="btn-player-action" id="btnOpenYoutube" title="ნახვა YouTube-ზე">
+              <i class="fa-brands fa-youtube" style="color: #ff334b;"></i> YouTube
+            </button>
+          </div>
+        </div>
+
+        <p class="player-description" id="playerDesc">ვიდეოს დეტალური აღწერა...</p>
+
+        <!-- Interactive Georgian Comments Section -->
+        <div class="comments-section">
+          <h4 class="comments-header">
+            <i class="fa-regular fa-comments" style="color: var(--netflix-red);"></i> კომენტარები და განხილვა
+          </h4>
+
+          <div class="comment-input-box">
+            <input type="text" id="commentInput" class="comment-input" placeholder="დაწერეთ თქვენი კომენტარი გადაცემაზე...">
+            <button class="btn-send-comment" id="btnSendComment">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+
+          <div class="comments-list" id="commentsList">
+            <!-- Dynamic Comments -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       7. 2-MINUTE SPOKEN ANNOUNCEMENT TOAST BANNER
+       ======================================================== -->
+  <div class="announcement-toast" id="announcementToast">
+    <div class="announcement-avatar">
+      <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=150&q=80" alt="Jajanidze">
+    </div>
+    <div>
+      <div class="announcement-title">
+        <i class="fa-solid fa-bullhorn"></i> ჯაჯანაძის 2-წუთიანი შეხსენება
+      </div>
+      <div class="announcement-text">„დათოა სულელი ტვინიკოსი“ 🧠</div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       8. FLOATING AUDIO / MUSIC PLAYER BAR
+       ======================================================== -->
+  <div class="bottom-music-bar" id="bottomMusicBar">
+    <div class="music-bar-left">
+      <div class="music-equalizer">
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+      </div>
+      <div class="music-track-info">
+        <span class="music-track-title">ჯაჯანაძის შოუს ოფიციალური თემა (Groove Mix)</span>
+        <span class="music-track-sub">სხვა რაკურსი • Synth & Funk Edition</span>
+      </div>
+    </div>
+
+    <div class="music-controls">
+      <button class="btn-music-play" id="btnMusicPlay" title="დაკვრა / პაუზა">
+        <i class="fa-solid fa-play"></i>
+      </button>
+
+      <button class="btn-music-tool" id="btnMusicMute" title="ხმის ჩართვა / გამორთვა">
+        <i class="fa-solid fa-volume-high"></i>
+      </button>
+
+      <div class="volume-slider-wrap">
+        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.35">
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+// JAJANADZE FLIX - Video Database (ყველა ვიდეო ჯაჯანაძეზე / Jajanaze)
+
+const JAJANADZE_VIDEOS = [
+  {
+    id: "j1",
+    title: "ჯაჯანაძის შოუ - სხვა რაკურსი (გრანდიოზული გამოშვება)",
+    category: "talkshow",
+    categoryName: "ჯაჯანაძის შოუ",
+    person: "გია ჯაჯანაძე",
+    duration: "1:24:15",
+    year: "2024",
+    views: "289,500",
+    rating: "9.9",
+    tag: "🔥 ჯაჯანაძე",
+    youtubeId: "Wn6R5vQY4qY",
+    searchQuery: "ჯაჯანაძე სხვა რაკურსი",
+    description: "გია ჯაჯანაძის ცნობილი საავტორო გადაცემა. განხილვები, მოულოდნელი სტუმრები და ექსკლუზიური აღიარებები პირდაპირ ეთერში.",
+    thumbnail: "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=800&q=80",
+    badge: "Jajanadze Show"
+  },
+  {
+    id: "j2",
+    title: "დათო ჯაჯანაძე - ექსკლუზიური ინტერვიუ და პირადი ისტორია",
+    category: "interview",
+    categoryName: "ინტერვიუ",
+    person: "დათო ჯაჯანაძე",
+    duration: "42:18",
+    year: "2024",
+    views: "340,100",
+    rating: "10.0",
+    tag: "⭐ დათო ჯაჯანაძე",
+    youtubeId: "9bZkp7q19f0",
+    searchQuery: "დათო ჯაჯანაძე ინტერვიუ",
+    description: "ინტერვიუ დათო ჯაჯანაძესთან. გულწრფელი საუბარი, ცხოვრებისეული გამოცდილება და საინტერესო დეტალები.",
+    thumbnail: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800&q=80",
+    badge: "Dato Jajanadze"
+  },
+  {
+    id: "j3",
+    title: "ჯაჯანაძე და ანა მალაზონია - 'ჩემო მაგნოლია' (ცოცხალი შესრულება)",
+    category: "music",
+    categoryName: "სიმღერა",
+    person: "ჯაჯანაძე",
+    duration: "04:12",
+    year: "2023",
+    views: "195,400",
+    rating: "9.8",
+    tag: "🎵 ჰიტი",
+    youtubeId: "kJQP7kiw5Fk",
+    searchQuery: "ჯაჯანაძე ჩემო მაგნოლია",
+    description: "ჯაჯანაძის მიერ შესრულებული ლეგენდარული სიმღერა 'ჩემო მაგნოლია'. ემოციური და დაუვიწყარი ვოკალი.",
+    thumbnail: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
+    badge: "Jajanadze Live"
+  },
+  {
+    id: "j4",
+    title: "ჯაჯანაძის მისტიკური გადაცემა: ექსტრასენსები და წინასწარმეტყველებები",
+    category: "mystic",
+    categoryName: "მისტიკა",
+    person: "ჯაჯანაძე",
+    duration: "1:15:40",
+    year: "2024",
+    views: "450,200",
+    rating: "9.9",
+    tag: "👁️ მისტიკა",
+    youtubeId: "L_LUpnjgPso",
+    searchQuery: "ჯაჯანაძე ექსტრასენსები მისტიკა",
+    description: "ამოუცნობი მოვლენები და რეალური მისტიკური ისტორიები ჯაჯანაძის სტუდიაში მოწვეულ სტუმრებთან ერთად.",
+    thumbnail: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80",
+    badge: "Mystic Jajanadze"
+  },
+  {
+    id: "j5",
+    title: "ჯაჯანაძის კურიოზები - სასაცილო მომენტები გადაღებებიდან",
+    category: "comedy",
+    categoryName: "კურიოზები",
+    person: "ჯაჯანაძე",
+    duration: "18:22",
+    year: "2023",
+    views: "580,000",
+    rating: "9.9",
+    tag: "😂 კურიოზი",
+    youtubeId: "fJ9rUzIMcZQ",
+    searchQuery: "ჯაჯანაძე კურიოზები",
+    description: "კადრსმიღმა კურიოზები და სიცილის აფეთქებები ჯაჯანაძის გადაცემებიდან. რაც ეთერში არ მოხვდა.",
+    thumbnail: "https://images.unsplash.com/photo-1527224857830-43a7acc85260?auto=format&fit=crop&w=800&q=80",
+    badge: "Funny Moments"
+  },
+  {
+    id: "j6",
+    title: "ჯაჯანაძე - 'დაუკარით' (Jajanaze Live Performance)",
+    category: "music",
+    categoryName: "სიმღერა",
+    person: "ჯაჯანაძე (Jajanaze)",
+    duration: "05:08",
+    year: "2023",
+    views: "210,000",
+    rating: "9.7",
+    tag: "🎶 Jajanaze Music",
+    youtubeId: "ZbZSe6N_BXs",
+    searchQuery: "ჯაჯანაძე დაუკარით jajanaze",
+    description: "ჯაჯანაძის ენერგიული ცეკვა და სიმღერა 'დაუკარით'. ნამდვილი ქართული ენერგია და შოუ.",
+    thumbnail: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80",
+    badge: "Jajanaze Hit"
+  },
+  {
+    id: "j7",
+    title: "გიორგი ჯაჯანაძე #ნოესთან - გადაცემა პერსონაზე",
+    category: "interview",
+    categoryName: "ინტერვიუ",
+    person: "გიორგი ჯაჯანაძე",
+    duration: "54:30",
+    year: "2023",
+    views: "315,000",
+    rating: "9.8",
+    tag: "🎙️ ჯაჯანაძე",
+    youtubeId: "JGwWNGJdvx8",
+    searchQuery: "გიორგი ჯაჯანაძე ნოესთან",
+    description: "გიორგი ჯაჯანაძე საუბრობს ცხოვრებისეულ გზაზე, შემოქმედებაზე, ინგლისურის სიყვარულსა და წარმატებაზე.",
+    thumbnail: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=800&q=80",
+    badge: "Exclusive"
+  },
+  {
+    id: "j8",
+    title: "ზურიუსი და ჯაჯანაძე სტვენით ურთიერთობენ - Viral Jajanaze",
+    category: "comedy",
+    categoryName: "კურიოზები",
+    person: "ჯაჯანაძე (Jajanaze)",
+    duration: "08:44",
+    year: "2023",
+    views: "640,000",
+    rating: "10.0",
+    tag: "👑 ლეგენდა",
+    youtubeId: "3tmd-ClpJxA",
+    searchQuery: "ზურიუსი და ჯაჯანაძე სტვენით",
+    description: "ინტერნეტის ლეგენდარული ვირუსული ვიდეო: ზურიუსისა და ჯაჯანაძის ცნობილი დიალოგი სტვენით.",
+    thumbnail: "https://images.unsplash.com/photo-1514306191717-452ec28c7814?auto=format&fit=crop&w=800&q=80",
+    badge: "Viral Classic"
+  },
+  {
+    id: "j9",
+    title: "დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს - სპეციალური გამოშვება",
+    category: "special",
+    categoryName: "სპეციალური",
+    person: "ჯაჯანაძე",
+    duration: "45:00",
+    year: "2024",
+    views: "920,000",
+    rating: "10.0",
+    tag: "👑 Jajanadze Flix",
+    youtubeId: "OPf0YbXqDm0",
+    searchQuery: "დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს",
+    description: "Jajanadze Flix-ის ოფიციალური სპეციალური გამოშვება: დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს!",
+    thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80",
+    badge: "Masterpiece"
+  },
+  {
+    id: "j10",
+    title: "ლაშა ჯაჯანაძე და ქართველი სპორტსმენები - შოუ და განხილვა",
+    category: "interview",
+    categoryName: "ინტერვიუ",
+    person: "ლაშა ჯაჯანაძე",
+    duration: "35:10",
+    year: "2024",
+    views: "185,000",
+    rating: "9.6",
+    tag: "🏆 ლაშა ჯაჯანაძე",
+    youtubeId: "2Vv-BfVoq4g",
+    searchQuery: "ლაშა ჯაჯანაძე",
+    description: "ლაშა ჯაჯანაძე სტუმრად სატელევიზიო გადაცემაში: სპორტული მიღწევები და ექსკლუზიური ისტორიები.",
+    thumbnail: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=800&q=80",
+    badge: "Lasha Jajanadze"
+  },
+  {
+    id: "j11",
+    title: "ჯაჯანაძის შოუ - ღალატის ფსიქოლოგია და ოჯახური დრამა",
+    category: "talkshow",
+    categoryName: "ჯაჯანაძის შოუ",
+    person: "ჯაჯანაძე",
+    duration: "1:32:00",
+    year: "2024",
+    views: "410,000",
+    rating: "9.8",
+    tag: "⚡ ჯაჯანაძე",
+    youtubeId: "hT_nvWreIhg",
+    searchQuery: "ჯაჯანაძის შოუ ღალატი",
+    description: "ჯაჯანაძის ერთ-ერთი ყველაზე მწვავე გადაცემა: ოჯახური ღალატი, მიტევება და ფსიქოლოგების შეფასებები.",
+    thumbnail: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80",
+    badge: "Popular Episode"
+  },
+  {
+    id: "j12",
+    title: "ჯაჯანაძეების საგვარეულო შეკრება და ისტორია (Jajanaze Family)",
+    category: "special",
+    categoryName: "სპეციალური",
+    person: "ჯაჯანაძეები (Jajanaze)",
+    duration: "28:40",
+    year: "2023",
+    views: "165,000",
+    rating: "9.7",
+    tag: "🇬🇪 ჯაჯანაძეები",
+    youtubeId: "RgKAFK5djSk",
+    searchQuery: "ჯაჯანაძეები ისტორია jajanaze",
+    description: "ჯაჯანაძეების გვარის წარმომადგენლები, მათი ისტორია, ტრადიციები და შეხვედრა.",
+    thumbnail: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80",
+    badge: "Family Heritage"
+  },
+  {
+    id: "j13",
+    title: "ჯაჯანაძე და 'ღამის შოუს ბენდი' - ცოცხალი მუსიკალური კოლაბორაცია",
+    category: "music",
+    categoryName: "სიმღერა",
+    person: "ჯაჯანაძე",
+    duration: "06:33",
+    year: "2023",
+    views: "240,000",
+    rating: "9.7",
+    tag: "🎸 მუსიკა",
+    youtubeId: "kJQP7kiw5Fk",
+    searchQuery: "ჯაჯანაძე ღამის შოუს ბენდი",
+    description: "ჯაჯანაძის მხიარული და ენერგიული ნომერი ბენდის გოგოებთან ერთად.",
+    thumbnail: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=800&q=80",
+    badge: "Live Concert"
+  },
+  {
+    id: "j14",
+    title: "ჯაჯანაძე 'ფარულ კონვერტში' - ია ფარულავას პირისპირ",
+    category: "interview",
+    categoryName: "ინტერვიუ",
+    person: "ჯაჯანაძე",
+    duration: "48:15",
+    year: "2023",
+    views: "330,000",
+    rating: "9.8",
+    tag: "✉️ ფარული კონვერტი",
+    youtubeId: "Wn6R5vQY4qY",
+    searchQuery: "ჯაჯანაძე ფარული კონვერტი",
+    description: "ყველაზე გულწრფელი და უხერხული კითხვები ჯაჯანაძეს გადაცემაში 'ფარული კონვერტი'.",
+    thumbnail: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=800&q=80",
+    badge: "Exclusive Talk"
+  },
+  {
+    id: "j15",
+    title: "ნიკა ჯაჯანაძე - გადაცემა და ინტერნეტ პროექტი",
+    category: "special",
+    categoryName: "სპეციალური",
+    person: "ნიკა ჯაჯანაძე",
+    duration: "22:50",
+    year: "2024",
+    views: "142,000",
+    rating: "9.5",
+    tag: "📱 ნიკა ჯაჯანაძე",
+    youtubeId: "9bZkp7q19f0",
+    searchQuery: "ნიკა ჯაჯანაძე",
+    description: "ნიკა ჯაჯანაძის ინტერნეტ გადაცემა და საინტერესო დისკუსია თანამედროვე ტრენდებზე.",
+    thumbnail: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
+    badge: "Nika Jajanadze"
+  },
+  {
+    id: "j16",
+    title: "ჯაჯანაძის შოუ - საუკეთესო მომენტების კრებული (Best Of Jajanaze)",
+    category: "talkshow",
+    categoryName: "ჯაჯანაძის შოუ",
+    person: "ჯაჯანაძე (Jajanaze)",
+    duration: "2:05:12",
+    year: "2024",
+    views: "710,000",
+    rating: "9.9",
+    tag: "💎 ოქროს ფონდი",
+    youtubeId: "L_LUpnjgPso",
+    searchQuery: "ჯაჯანაძე საუკეთესო მომენტები jajanaze",
+    description: "2-საათიანი ოქროს კოლექცია: ჯაჯანაძის გადაცემების ყველა დროის ყველაზე რეიტინგული ეპიზოდები.",
+    thumbnail: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=800&q=80",
+    badge: "Megamix Jajanaze"
+  }
+];
+
+// Georgian Comments
+const JAJANADZE_COMMENTS = [
+  { user: "ნინო ბერიძე", text: "ჯაჯანაძის გადაცემას არაფერი შეედრება, წლებია ყოველ ხუთშაბათს ვუყურებ!", time: "10 წუთის წინ", likes: 45 },
+  { user: "გიორგი მ.", text: "დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს! მსოფლიო დონეა! 🇬🇧🇬🇪", time: "25 წუთის წინ", likes: 92 },
+  { user: "ლევან კ.", text: "დათო ჯაჯანაძის ინტერვიუ უძლიერესი იყო, საიტმაც რომ თქვა 'დათოა სულელი ტვინიკოსი' მაგაზე ვიცინე 😂", time: "1 საათის წინ", likes: 120 },
+  { user: "მარიამი", text: "ჯაჯანაძის მაგნოლია პირდაპირ გულში მხვდება, უნიჭიერესი ადამიანია ❤️", time: "2 საათის წინ", likes: 38 },
+  { user: "სალომე ხ.", text: "მისტიკაზე ჯაჯანაძის გადაცემა ჩემი საყვარელია! Jajanadze Flix-ს მადლობა!", time: "5 საათის წინ", likes: 24 }
+];
+
+// Quotes
+const JAJANADZE_QUOTES = [
+  "„დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს!“",
+  "„ცხოვრება ჯაჯანაძის რაკურსიდან ყოველთვის უფრო საინტერესოა.“",
+  "„თუ გინდა სამყარო შეიცნო, ჯერ საკუთარ სულში ჩაიხედე - ჯაჯანაძე.“",
+  "„დათოა სულელი ტვინიკოსი... მაგრამ ჩვენ მაინც გვიყვარს!“"
+];
+
+</script>
+  <script>
+// Jajanadze Flix - Audio Engine (Web Audio API & Speech Synthesis)
+
+class JajanadzeAudioEngine {
+  constructor() {
+    this.audioCtx = null;
+    this.isPlayingMusic = false;
+    this.musicVolume = 0.35;
+    this.tempo = 118; // BPM for talk show groove
+    this.musicTimer = null;
+    this.step = 0;
+    this.masterGain = null;
+    this.isMuted = false;
+  }
+
+  initContext() {
+    if (!this.audioCtx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      this.audioCtx = new AudioContext();
+      this.masterGain = this.audioCtx.createGain();
+      this.masterGain.gain.setValueAtTime(this.musicVolume, this.audioCtx.currentTime);
+      this.masterGain.connect(this.audioCtx.destination);
+    }
+    if (this.audioCtx.state === 'suspended') {
+      this.audioCtx.resume();
+    }
+  }
+
+  // 1. Netflix Iconic "TA-DUM" Sound Effect Synthesizer
+  playTadum() {
+    this.initContext();
+    const now = this.audioCtx.currentTime;
+
+    // A. Sub-bass boom (80Hz -> 30Hz punch)
+    const subOsc = this.audioCtx.createOscillator();
+    const subGain = this.audioCtx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(95, now);
+    subOsc.frequency.exponentialRampToValueAtTime(32, now + 1.2);
+    
+    subGain.gain.setValueAtTime(0.001, now);
+    subGain.gain.linearRampToValueAtTime(1.0, now + 0.04);
+    subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+
+    subOsc.connect(subGain);
+    subGain.connect(this.masterGain);
+    subOsc.start(now);
+    subOsc.stop(now + 2.6);
+
+    // B. Second Bass Strike (The "DUM" hit at 0.4s)
+    const hitOsc = this.audioCtx.createOscillator();
+    const hitGain = this.audioCtx.createGain();
+    hitOsc.type = 'triangle';
+    hitOsc.frequency.setValueAtTime(120, now + 0.38);
+    hitOsc.frequency.exponentialRampToValueAtTime(40, now + 1.8);
+
+    hitGain.gain.setValueAtTime(0.001, now);
+    hitGain.gain.setValueAtTime(0.001, now + 0.38);
+    hitGain.gain.linearRampToValueAtTime(0.9, now + 0.42);
+    hitGain.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
+
+    hitOsc.connect(hitGain);
+    hitGain.connect(this.masterGain);
+    hitOsc.start(now + 0.38);
+    hitOsc.stop(now + 2.9);
+
+    // C. Metallic Gong / Cinematic Anvil high shimmer
+    const shimmerOsc = this.audioCtx.createOscillator();
+    const shimmerFilter = this.audioCtx.createBiquadFilter();
+    const shimmerGain = this.audioCtx.createGain();
+
+    shimmerOsc.type = 'sawtooth';
+    shimmerOsc.frequency.setValueAtTime(360, now + 0.38);
+    shimmerOsc.frequency.exponentialRampToValueAtTime(180, now + 2.5);
+
+    shimmerFilter.type = 'bandpass';
+    shimmerFilter.frequency.setValueAtTime(1200, now + 0.38);
+    shimmerFilter.Q.setValueAtTime(4.0, now + 0.38);
+
+    shimmerGain.gain.setValueAtTime(0.001, now);
+    shimmerGain.gain.setValueAtTime(0.001, now + 0.38);
+    shimmerGain.gain.linearRampToValueAtTime(0.4, now + 0.45);
+    shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + 3.2);
+
+    shimmerOsc.connect(shimmerFilter);
+    shimmerFilter.connect(shimmerGain);
+    shimmerGain.connect(this.masterGain);
+    shimmerOsc.start(now + 0.38);
+    shimmerOsc.stop(now + 3.3);
+  }
+
+  // 2. Play Notification Ping (Gmail code arrival)
+  playNotificationPing() {
+    this.initContext();
+    const now = this.audioCtx.currentTime;
+    const osc = this.audioCtx.createOscillator();
+    const gain = this.audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, now); // A5
+    osc.frequency.setValueAtTime(1320, now + 0.08); // E6
+
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(now);
+    osc.stop(now + 0.65);
+  }
+
+  // 3. UI Click Sound
+  playClick() {
+    this.initContext();
+    const now = this.audioCtx.currentTime;
+    const osc = this.audioCtx.createOscillator();
+    const gain = this.audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(700, now);
+    osc.frequency.exponentialRampToValueAtTime(300, now + 0.05);
+
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(now);
+    osc.stop(now + 0.07);
+  }
+
+  // 4. Jajanidze Custom Theme Soundtrack (Talkshow Funk & Synth Groove)
+  startMusic() {
+    if (this.isPlayingMusic) return;
+    this.initContext();
+    this.isPlayingMusic = true;
+    this.step = 0;
+
+    const secondsPerBeat = 60.0 / this.tempo;
+    const stepDuration = secondsPerBeat / 4; // 16th notes
+
+    // Bass notes progression (Am - F - C - G)
+    const bassScale = [
+      110, 110, 130.81, 146.83, 110, 110, 164.81, 146.83,
+      87.31, 87.31, 110, 130.81, 130.81, 130.81, 146.83, 98.0
+    ];
+
+    // Synth Melody notes
+    const melodyScale = [
+      440, 0, 523.25, 0, 659.25, 587.33, 523.25, 0,
+      392, 0, 440, 523.25, 0, 659.25, 587.33, 440
+    ];
+
+    this.musicTimer = setInterval(() => {
+      if (!this.isPlayingMusic || !this.audioCtx) return;
+      const t = this.audioCtx.currentTime;
+      const currentStep = this.step % 16;
+
+      // Kick on 0, 4, 8, 12
+      if (currentStep % 4 === 0) {
+        this.playDrumKick(t);
+      }
+      // Snare on 4, 12
+      if (currentStep === 4 || currentStep === 12) {
+        this.playDrumSnare(t);
+      }
+      // Hi-hat on every odd step
+      if (currentStep % 2 === 0) {
+        this.playHiHat(t, 0.05);
+      } else {
+        this.playHiHat(t, 0.02);
+      }
+
+      // Bass note
+      const bassFreq = bassScale[currentStep];
+      if (bassFreq > 0) {
+        this.playBassNote(t, bassFreq, stepDuration * 1.5);
+      }
+
+      // Melody lead
+      const melodyFreq = melodyScale[currentStep];
+      if (melodyFreq > 0 && Math.random() > 0.15) {
+        this.playMelodyLead(t, melodyFreq, stepDuration * 1.8);
+      }
+
+      this.step++;
+    }, stepDuration * 1000);
+  }
+
+  stopMusic() {
+    this.isPlayingMusic = false;
+    if (this.musicTimer) {
+      clearInterval(this.musicTimer);
+      this.musicTimer = null;
+    }
+  }
+
+  toggleMusic() {
+    if (this.isPlayingMusic) {
+      this.stopMusic();
+      return false;
+    } else {
+      this.startMusic();
+      return true;
+    }
+  }
+
+  setVolume(val) {
+    this.musicVolume = parseFloat(val);
+    if (this.masterGain && this.audioCtx) {
+      this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : this.musicVolume, this.audioCtx.currentTime);
+    }
+  }
+
+  toggleMute() {
+    this.isMuted = !this.isMuted;
+    if (this.masterGain && this.audioCtx) {
+      this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : this.musicVolume, this.audioCtx.currentTime);
+    }
+    return this.isMuted;
+  }
+
+  // Instrument helpers
+  playDrumKick(t) {
+    const osc = this.audioCtx.createOscillator();
+    const gain = this.audioCtx.createGain();
+    osc.frequency.setValueAtTime(140, t);
+    osc.frequency.exponentialRampToValueAtTime(38, t + 0.1);
+    gain.gain.setValueAtTime(0.5, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(t);
+    osc.stop(t + 0.22);
+  }
+
+  playDrumSnare(t) {
+    // Noise buffer
+    const bufferSize = this.audioCtx.sampleRate * 0.1;
+    const buffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+    const output = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+    const noise = this.audioCtx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.audioCtx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(1000, t);
+
+    const gain = this.audioCtx.createGain();
+    gain.gain.setValueAtTime(0.25, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+    noise.start(t);
+    noise.stop(t + 0.15);
+  }
+
+  playHiHat(t, volume) {
+    const osc = this.audioCtx.createOscillator();
+    const filter = this.audioCtx.createBiquadFilter();
+    const gain = this.audioCtx.createGain();
+
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(7500, t);
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(6000, t);
+
+    gain.gain.setValueAtTime(volume, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(t);
+    osc.stop(t + 0.05);
+  }
+
+  playBassNote(t, freq, duration) {
+    const osc = this.audioCtx.createOscillator();
+    const filter = this.audioCtx.createBiquadFilter();
+    const gain = this.audioCtx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(freq, t);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(450, t);
+    filter.frequency.exponentialRampToValueAtTime(150, t + duration);
+
+    gain.gain.setValueAtTime(0.3, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(t);
+    osc.stop(t + duration);
+  }
+
+  playMelodyLead(t, freq, duration) {
+    const osc = this.audioCtx.createOscillator();
+    const gain = this.audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, t);
+
+    gain.gain.setValueAtTime(0.12, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(t);
+    osc.stop(t + duration);
+  }
+
+  // 5. Speech Synthesis Helper with Natural Georgian & Phonetic Fallback
+  speak(text, onEnd = null) {
+    if (!('speechSynthesis' in window)) {
+      console.warn("SpeechSynthesis not supported");
+      if (onEnd) onEnd();
+      return;
+    }
+
+    // Cancel ongoing speech to ensure immediate playback
+    window.speechSynthesis.cancel();
+
+    // Map common phrases to clear phonetic pronunciation if English voice is used
+    const phoneticMap = {
+      "დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს": "Dideba Tsireklidze Jajanadzes inglisuris mtsodnes",
+      "დათოა სულელი ტვინიკოსი": "Datoa soolelee tveen-eekosee"
+    };
+
+    const voices = window.speechSynthesis.getVoices();
+    const georgianVoice = voices.find(v => v.lang.toLowerCase().includes('ka') || v.lang.toLowerCase().includes('geo'));
+    
+    let textToSpeak = text;
+    let selectedVoice = null;
+    let selectedLang = 'ka-GE';
+
+    if (georgianVoice) {
+      selectedVoice = georgianVoice;
+      selectedLang = 'ka-GE';
+      textToSpeak = text;
+    } else {
+      // Pick best English voice for clear phonetic speech
+      selectedVoice = voices.find(v => v.lang.includes('en') || v.default) || null;
+      selectedLang = 'en-US';
+      textToSpeak = phoneticMap[text] || text;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    utterance.lang = selectedLang;
+    if (selectedVoice) utterance.voice = selectedVoice;
+    utterance.rate = 0.95;
+    utterance.pitch = 1.05;
+    utterance.volume = 1.0;
+
+    if (onEnd) {
+      utterance.onend = onEnd;
+      utterance.onerror = onEnd;
+    }
+
+    // If voices are not yet loaded, wait for onvoiceschanged
+    if (voices.length === 0 && 'onvoiceschanged' in window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.speak(utterance);
+      };
+    } else {
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+}
+
+// Global audio singleton
+const jajanadzeAudio = new JajanadzeAudioEngine();
+
+</script>
+  <script>
+// JAJANADZE FLIX - Main Application Logic
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Application State
+  const state = {
+    currentUser: null,
+    currentFilter: 'all',
+    searchQuery: '',
+    visibleVideosCount: 8,
+    activeVideo: null,
+    timerSecondsLeft: 120, // 2 minutes countdown
+    timerInterval: null,
+    generatedOtp: null,
+    userLikes: JSON.parse(localStorage.getItem('jajanadze_likes') || '{}'),
+    customComments: JSON.parse(localStorage.getItem('jajanadze_comments') || '{}')
+  };
+
+  // DOM Elements
+  const introOverlay = document.getElementById('introOverlay');
+  const introStartScreen = document.getElementById('introStartScreen');
+  const introStage = document.getElementById('introStage');
+  const btnEnterFlix = document.getElementById('btnEnterFlix');
+  const btnSkipIntro = document.getElementById('btnSkipIntro');
+
+  const authOverlay = document.getElementById('authOverlay');
+  const authForm = document.getElementById('authForm');
+  const userNameInput = document.getElementById('userNameInput');
+  const userEmailInput = document.getElementById('userEmailInput');
+  const btnSendCode = document.getElementById('btnSendCode');
+  const otpSection = document.getElementById('otpSection');
+  const sentEmailDisplay = document.getElementById('sentEmailDisplay');
+  const otpInputs = document.querySelectorAll('.otp-digit');
+  const btnVerifyOtp = document.getElementById('btnVerifyOtp');
+
+  const videoGrid = document.getElementById('videoGrid');
+  const filterChips = document.querySelectorAll('.filter-chip');
+  const searchInput = document.getElementById('searchInput');
+  const btnLoadMore = document.getElementById('btnLoadMore');
+
+  const playerModal = document.getElementById('playerModal');
+  const playerIframe = document.getElementById('playerIframe');
+  const playerTitle = document.getElementById('playerTitle');
+  const playerViews = document.getElementById('playerViews');
+  const playerCategory = document.getElementById('playerCategory');
+  const playerYear = document.getElementById('playerYear');
+  const playerDesc = document.getElementById('playerDesc');
+  const btnClosePlayer = document.getElementById('btnClosePlayer');
+  const btnLikeVideo = document.getElementById('btnLikeVideo');
+  const likeCountSpan = document.getElementById('likeCount');
+  const btnOpenYoutube = document.getElementById('btnOpenYoutube');
+  const commentsList = document.getElementById('commentsList');
+  const commentInput = document.getElementById('commentInput');
+  const btnSendComment = document.getElementById('btnSendComment');
+
+  const timerPill = document.getElementById('timerPill');
+  const timerText = document.getElementById('timerText');
+  const announcementToast = document.getElementById('announcementToast');
+
+  const bottomMusicBar = document.getElementById('bottomMusicBar');
+  const btnMusicPlay = document.getElementById('btnMusicPlay');
+  const btnMusicMute = document.getElementById('btnMusicMute');
+  const volumeSlider = document.getElementById('volumeSlider');
+  const userProfileBadge = document.getElementById('userProfileBadge');
+  const currentUserName = document.getElementById('currentUserName');
+
+  const heroPlayBtn = document.getElementById('heroPlayBtn');
+  const heroInfoBtn = document.getElementById('heroInfoBtn');
+
+  // ==========================================================
+  // 1. INTRO & ENTRANCE ANIMATION SEQUENCE
+  // ==========================================================
+  btnEnterFlix.addEventListener('click', () => {
+    startCinematicIntro();
+  });
+
+  btnSkipIntro.addEventListener('click', () => {
+    endCinematicIntro();
+  });
+
+  function startCinematicIntro() {
+    jajanadzeAudio.initContext();
+    introStartScreen.style.display = 'none';
+    introStage.style.display = 'flex';
+
+    // Play iconic Netflix "TA-DUM" boom!
+    jajanadzeAudio.playTadum();
+
+    // Voice proclamation: "დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს"
+    setTimeout(() => {
+      jajanadzeAudio.speak("დიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს");
+    }, 600);
+
+    // End intro sequence after 4.5 seconds
+    setTimeout(() => {
+      endCinematicIntro();
+    }, 4500);
+  }
+
+  function endCinematicIntro() {
+    introOverlay.classList.add('hidden');
+    checkUserAuth();
+  }
+
+  // ==========================================================
+  // 2. USER AUTHENTICATION & GMAIL 5-DIGIT OTP
+  // ==========================================================
+  function checkUserAuth() {
+    const savedUser = localStorage.getItem('jajanadze_user');
+    if (savedUser) {
+      try {
+        state.currentUser = JSON.parse(savedUser);
+        updateUserUI();
+        initPlatformExperience();
+        return;
+      } catch (e) {
+        console.error("Auth parsing error:", e);
+      }
+    }
+    // If not logged in, show auth form
+    authOverlay.classList.remove('hidden');
+  }
+
+  function updateUserUI() {
+    if (state.currentUser) {
+      currentUserName.textContent = state.currentUser.name || 'მომხმარებელი';
+    }
+  }
+
+  // Generate 5-Digit Code & Dispatch to User's Real Gmail
+  btnSendCode.addEventListener('click', (e) => {
+    e.preventDefault();
+    jajanadzeAudio.playClick();
+
+    const name = userNameInput.value.trim();
+    const email = userEmailInput.value.trim();
+
+    if (!name) {
+      alert("გთხოვთ შეიყვანოთ თქვენი სახელი!");
+      userNameInput.focus();
+      return;
+    }
+    if (!email || !email.includes('@')) {
+      alert("გთხოვთ შეიყვანოთ სწორი Gmail მისამართი!");
+      userEmailInput.focus();
+      return;
+    }
+
+    // Generate random 5-digit code
+    state.generatedOtp = Math.floor(10000 + Math.random() * 90000).toString();
+
+    // Show sending state
+    btnSendCode.disabled = true;
+    btnSendCode.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> იგზავნება Gmail-ზე...';
+
+    // Dispatch real email via FormSubmit AJAX directly to target email
+    const emailPayload = {
+      _subject: `Jajanadze Flix - თქვენი უსაფრთხოების კოდია: ${state.generatedOtp}`,
+      name: `Jajanadze Flix (დიდება ცირეკლიძე ჯაჯანაძეს)`,
+      email: email,
+      message: `გამარჯობა ${name}!\n\nთქვენი 5-ციფრიანი ვერიფიკაციის კოდია: ${state.generatedOtp}\n\nშეიყვანეთ ეს კოდი საიტზე რეგისტრაციის დასასრულებლად.\n\nდიდება ცირეკლიძე ჯაჯანაძეს ინგლისურის მცოდნეს!`,
+      _template: "table",
+      _captcha: "false"
+    };
+
+    fetch(`https://formsubmit.co/ajax/${encodeURIComponent(email)}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(emailPayload)
+    })
+    .then(res => res.json())
+    .catch(err => {
+      console.log("Email dispatch notice:", err);
+    });
+
+    // Reveal OTP section WITHOUT showing the code on the screen!
+    setTimeout(() => {
+      btnSendCode.style.display = 'none';
+      otpSection.style.display = 'block';
+      if (sentEmailDisplay) {
+        sentEmailDisplay.textContent = email;
+      }
+      jajanadzeAudio.playNotificationPing();
+      otpInputs[0].focus();
+    }, 600);
+  });
+
+  // OTP inputs keyboard navigation & auto-tabbing
+  otpInputs.forEach((input, index) => {
+    input.addEventListener('input', (e) => {
+      const val = e.target.value;
+      if (val.length === 1 && index < otpInputs.length - 1) {
+        otpInputs[index + 1].focus();
+      }
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !input.value && index > 0) {
+        otpInputs[index - 1].focus();
+      }
+    });
+
+    // Support full 5-digit paste
+    input.addEventListener('paste', (e) => {
+      e.preventDefault();
+      const pasteData = (e.clipboardData || window.clipboardData).getData('text').trim();
+      if (/^\d{5}$/.test(pasteData)) {
+        pasteData.split('').forEach((char, i) => {
+          if (otpInputs[i]) otpInputs[i].value = char;
+        });
+        otpInputs[4].focus();
+      }
+    });
+  });
+
+  // Verify OTP and Save Account in localStorage
+  btnVerifyOtp.addEventListener('click', () => {
+    jajanadzeAudio.playClick();
+    let enteredCode = '';
+    otpInputs.forEach(inp => enteredCode += inp.value.trim());
+
+    if (enteredCode !== state.generatedOtp) {
+      alert("კოდი არასწორია! გთხოვთ შეამოწმოთ თქვენს Gmail-ზე მოსული 5-ციფრიანი კოდი.");
+      return;
+    }
+
+    // Save account
+    const user = {
+      name: userNameInput.value.trim() || 'მაყურებელი',
+      email: userEmailInput.value.trim(),
+      registeredAt: new Date().toISOString()
+    };
+    state.currentUser = user;
+    localStorage.setItem('jajanadze_user', JSON.stringify(user));
+
+    updateUserUI();
+    authOverlay.classList.add('hidden');
+    gmailToast.style.display = 'none';
+
+    // Welcome speech
+    jajanadzeAudio.speak(`მოგესალმებით ჯაჯანაძე ფლიქსზე, ${user.name}!`);
+
+    initPlatformExperience();
+  });
+
+  // User Profile click: allows Logout or Account Switch
+  userProfileBadge.addEventListener('click', () => {
+    if (confirm("გსურთ ექაუნთიდან გამოსვლა და ახლით შესვლა?")) {
+      localStorage.removeItem('jajanadze_user');
+      location.reload();
+    }
+  });
+
+  // ==========================================================
+  // 3. 2-MINUTE SPOKEN ANNOUNCEMENT ("დათოა სულელი ტვინიკოსი")
+  // ==========================================================
+  function startTwoMinuteTimer() {
+    if (state.timerInterval) clearInterval(state.timerInterval);
+
+    state.timerSecondsLeft = 120;
+    updateTimerDisplay();
+
+    state.timerInterval = setInterval(() => {
+      state.timerSecondsLeft--;
+
+      if (state.timerSecondsLeft <= 0) {
+        triggerDatoAnnouncement();
+        state.timerSecondsLeft = 120; // reset to 2 minutes
+      }
+
+      updateTimerDisplay();
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const mins = Math.floor(state.timerSecondsLeft / 60);
+    const secs = state.timerSecondsLeft % 60;
+    const formatted = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    timerText.textContent = `დათო: ${formatted}`;
+  }
+
+  function triggerDatoAnnouncement() {
+    // 1. Spoken by Web Speech API
+    jajanadzeAudio.speak("დათოა სულელი ტვინიკოსი");
+
+    // 2. Visible animated banner
+    announcementToast.classList.add('visible');
+    setTimeout(() => {
+      announcementToast.classList.remove('visible');
+    }, 6000);
+  }
+
+  // Instant Test Click on Timer Pill
+  timerPill.addEventListener('click', () => {
+    triggerDatoAnnouncement();
+  });
+
+  // ==========================================================
+  // 4. VIDEO CATALOG RENDERING & INFINITE SCROLL
+  // ==========================================================
+  function renderVideos() {
+    let list = JAJANADZE_VIDEOS;
+
+    // Filter by Category
+    if (state.currentFilter !== 'all') {
+      list = list.filter(v => v.category === state.currentFilter);
+    }
+
+    // Search Query Filter
+    if (state.searchQuery) {
+      const q = state.searchQuery.toLowerCase();
+      list = list.filter(v => 
+        v.title.toLowerCase().includes(q) || 
+        v.description.toLowerCase().includes(q) ||
+        v.categoryName.toLowerCase().includes(q)
+      );
+    }
+
+    const toShow = list.slice(0, state.visibleVideosCount);
+    videoGrid.innerHTML = '';
+
+    if (toShow.length === 0) {
+      videoGrid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #888;">
+          <i class="fa-solid fa-film" style="font-size: 3rem; margin-bottom: 15px; color: var(--netflix-red);"></i>
+          <h3>ვიდეოები ვერ მოიძებნა</h3>
+          <p>სცადეთ სხვა საძიებო სიტყვა ან კატეგორია.</p>
+        </div>
+      `;
+      btnLoadMore.style.display = 'none';
+      return;
+    }
+
+    toShow.forEach(video => {
+      const isLiked = state.userLikes[video.id];
+      const card = document.createElement('div');
+      card.className = 'video-card';
+      card.innerHTML = `
+        <div class="card-thumb-wrap">
+          <img src="${video.thumbnail}" class="card-thumb" alt="${video.title}" loading="lazy">
+          <span class="card-overlay-badge">${video.badge || video.categoryName}</span>
+          <span class="card-duration">${video.duration}</span>
+          <div class="card-play-hover">
+            <div class="play-circle-btn">
+              <i class="fa-solid fa-play"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-meta-row">
+            <span class="card-rating"><i class="fa-solid fa-star"></i> ${video.rating} Match</span>
+            <span class="card-year">${video.year}</span>
+          </div>
+          <h4 class="card-title" title="${video.title}">${video.title}</h4>
+          <div class="card-footer">
+            <span><i class="fa-regular fa-eye"></i> ${video.views}</span>
+            <span>${video.tag}</span>
+          </div>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        openVideoPlayer(video);
+      });
+
+      videoGrid.appendChild(card);
+    });
+
+    if (state.visibleVideosCount >= list.length) {
+      btnLoadMore.style.display = 'none';
+    } else {
+      btnLoadMore.style.display = 'inline-block';
+    }
+  }
+
+  // Category Filter Chips
+  filterChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      jajanadzeAudio.playClick();
+      filterChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      state.currentFilter = chip.dataset.category;
+      state.visibleVideosCount = 8;
+      renderVideos();
+    });
+  });
+
+  // Header Navigation Links
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      jajanadzeAudio.playClick();
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+
+      const cat = link.dataset.category;
+      state.currentFilter = cat;
+
+      // Sync filter chip UI
+      filterChips.forEach(c => {
+        if (c.dataset.category === cat) {
+          c.classList.add('active');
+        } else {
+          c.classList.remove('active');
+        }
+      });
+
+      state.visibleVideosCount = 8;
+      renderVideos();
+
+      // Smooth scroll to video section
+      document.querySelector('.content-area').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Search Input with YouTube URL Auto-Detection
+  searchInput.addEventListener('input', (e) => {
+    const rawVal = e.target.value.trim();
+
+    // Check if user pasted a direct YouTube link
+    const ytMatch = rawVal.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+    if (ytMatch && ytMatch[1]) {
+      const customVideo = {
+        id: "custom_" + Date.now(),
+        title: "პირდაპირი ვიდეო: " + rawVal,
+        category: "special",
+        categoryName: "YouTube ვიდეო",
+        duration: "Direct",
+        year: "2024",
+        views: "1+",
+        rating: "10.0",
+        tag: "📺 პირდაპირი",
+        youtubeId: ytMatch[1],
+        searchQuery: rawVal,
+        description: "მომხმარებლის მიერ ჩასმული ვიდეო YouTube-დან.",
+        thumbnail: `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`,
+        badge: "Direct Play"
+      };
+      openVideoPlayer(customVideo);
+      searchInput.value = '';
+      return;
+    }
+
+    state.searchQuery = rawVal;
+    state.visibleVideosCount = 8;
+    renderVideos();
+  });
+
+  // Load More Button
+  btnLoadMore.addEventListener('click', () => {
+    jajanadzeAudio.playClick();
+    state.visibleVideosCount += 4;
+    renderVideos();
+  });
+
+  // Infinite Scroll Listener
+  window.addEventListener('scroll', () => {
+    // Scrolled header background
+    if (window.scrollY > 40) {
+      document.querySelector('.site-header').classList.add('scrolled');
+    } else {
+      document.querySelector('.site-header').classList.remove('scrolled');
+    }
+
+    // Trigger load more near bottom
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 400) {
+      let filteredCount = JAJANADZE_VIDEOS.length;
+      if (state.visibleVideosCount < filteredCount) {
+        state.visibleVideosCount += 4;
+        renderVideos();
+      }
+    }
+  });
+
+  // ==========================================================
+  // 5. IN-SITE VIDEO PLAYER MODAL & COMMENTS
+  // ==========================================================
+  function openVideoPlayer(video) {
+    jajanadzeAudio.playClick();
+    state.activeVideo = video;
+
+    playerTitle.textContent = video.title;
+    playerViews.textContent = `${video.views} ნახვა`;
+    playerCategory.textContent = video.categoryName;
+    playerYear.textContent = video.year;
+    playerDesc.textContent = video.description;
+
+    // Direct YouTube embed
+    playerIframe.src = `https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&rel=0&modestbranding=1`;
+
+    // Watch directly on YouTube button
+    btnOpenYoutube.onclick = () => {
+      window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(video.searchQuery || video.title)}`, '_blank');
+    };
+
+    // Update Likes UI
+    updateLikeButtonUI(video.id);
+
+    // Render Comments
+    renderComments(video.id);
+
+    playerModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // prevent bg scroll
+  }
+
+  function closeVideoPlayer() {
+    playerModal.classList.add('hidden');
+    playerIframe.src = '';
+    document.body.style.overflow = 'auto';
+  }
+
+  btnClosePlayer.addEventListener('click', closeVideoPlayer);
+  playerModal.addEventListener('click', (e) => {
+    if (e.target === playerModal) closeVideoPlayer();
+  });
+
+  // Like Toggle
+  btnLikeVideo.addEventListener('click', () => {
+    if (!state.activeVideo) return;
+    const vidId = state.activeVideo.id;
+    state.userLikes[vidId] = !state.userLikes[vidId];
+    localStorage.setItem('jajanadze_likes', JSON.stringify(state.userLikes));
+    updateLikeButtonUI(vidId);
+    jajanadzeAudio.playClick();
+  });
+
+  function updateLikeButtonUI(vidId) {
+    const isLiked = state.userLikes[vidId];
+    if (isLiked) {
+      btnLikeVideo.classList.add('active');
+      btnLikeVideo.innerHTML = `<i class="fa-solid fa-heart" style="color: #ff334b;"></i> მოწონებულია`;
+    } else {
+      btnLikeVideo.classList.remove('active');
+      btnLikeVideo.innerHTML = `<i class="fa-regular fa-heart"></i> მოწონება`;
+    }
+  }
+
+  // Comments Section
+  function renderComments(vidId) {
+    const videoCustomComments = state.customComments[vidId] || [];
+    const allComments = [...videoCustomComments, ...JAJANADZE_COMMENTS];
+
+    commentsList.innerHTML = '';
+    allComments.forEach(c => {
+      const el = document.createElement('div');
+      el.className = 'comment-item';
+      el.innerHTML = `
+        <div class="comment-author-row">
+          <span class="comment-author"><i class="fa-solid fa-user-circle"></i> ${c.user}</span>
+          <span class="comment-time">${c.time}</span>
+        </div>
+        <p class="comment-text">${c.text}</p>
+      `;
+      commentsList.appendChild(el);
+    });
+  }
+
+  btnSendComment.addEventListener('click', () => {
+    const text = commentInput.value.trim();
+    if (!text || !state.activeVideo) return;
+
+    const vidId = state.activeVideo.id;
+    if (!state.customComments[vidId]) state.customComments[vidId] = [];
+
+    const newComment = {
+      user: state.currentUser ? state.currentUser.name : 'მაყურებელი',
+      text: text,
+      time: 'ახლახან',
+      likes: 1
+    };
+
+    state.customComments[vidId].unshift(newComment);
+    localStorage.setItem('jajanadze_comments', JSON.stringify(state.customComments));
+
+    commentInput.value = '';
+    renderComments(vidId);
+    jajanadzeAudio.playClick();
+  });
+
+  // ==========================================================
+  // 6. HERO BANNER ACTIONS
+  // ==========================================================
+  heroPlayBtn.addEventListener('click', () => {
+    // Open the featured video (video #1)
+    if (JAJANADZE_VIDEOS.length > 0) {
+      openVideoPlayer(JAJANADZE_VIDEOS[0]);
+    }
+  });
+
+  heroInfoBtn.addEventListener('click', () => {
+    if (JAJANADZE_VIDEOS.length > 0) {
+      openVideoPlayer(JAJANADZE_VIDEOS[0]);
+    }
+  });
+
+  // ==========================================================
+  // 7. BACKGROUND THEME MUSIC & AUDIO CONTROLS
+  // ==========================================================
+  btnMusicPlay.addEventListener('click', () => {
+    const isPlaying = jajanadzeAudio.toggleMusic();
+    if (isPlaying) {
+      btnMusicPlay.innerHTML = '<i class="fa-solid fa-pause"></i>';
+      bottomMusicBar.classList.add('playing');
+    } else {
+      btnMusicPlay.innerHTML = '<i class="fa-solid fa-play"></i>';
+      bottomMusicBar.classList.remove('playing');
+    }
+  });
+
+  btnMusicMute.addEventListener('click', () => {
+    const isMuted = jajanadzeAudio.toggleMute();
+    btnMusicMute.innerHTML = isMuted 
+      ? '<i class="fa-solid fa-volume-xmark"></i>' 
+      : '<i class="fa-solid fa-volume-high"></i>';
+  });
+
+  volumeSlider.addEventListener('input', (e) => {
+    jajanadzeAudio.setVolume(e.target.value);
+  });
+
+  // ==========================================================
+  // 8. PLATFORM INITIALIZATION
+  // ==========================================================
+  function initPlatformExperience() {
+    renderVideos();
+    startTwoMinuteTimer();
+
+    // Start background synth music groove
+    setTimeout(() => {
+      jajanadzeAudio.startMusic();
+      btnMusicPlay.innerHTML = '<i class="fa-solid fa-pause"></i>';
+      bottomMusicBar.classList.add('playing');
+    }, 800);
+  }
+
+  // Pre-render video grid so it's ready behind overlays
+  renderVideos();
+});
+
+</script>
+</body>
+</html>
